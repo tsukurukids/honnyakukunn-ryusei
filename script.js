@@ -564,6 +564,10 @@ const quizBtn = document.getElementById('quiz-btn');
 const quizScore = document.getElementById('quiz-score');
 const quizMessage = document.getElementById('quiz-message');
 const quizDifficulty = document.getElementById('quiz-difficulty');
+// 【新規】3ヒント機能で使う部品（ボタンとテキスト）を準備するよ
+const quizHintBtn = document.getElementById('quiz-hint-btn');
+const quizHintText = document.getElementById('quiz-hint-text');
+let hintCount = 3; // 残りのヒントの数（最初は3回）
 
 // ホラーモードのときは難易度に「ホラー」を追加する
 function updateDifficultyOptions() {
@@ -661,6 +665,14 @@ function nextQuestion() {
     quizMessage.innerText = "がんばって！";
     quizMessage.style.color = "#333";
     quizInput.focus(); // 入力しやすくするためにフォーカスを合わせる
+
+    // 5. 【新規】ヒントの残り回数と表示を元通りにするよ
+    hintCount = 3;
+    if (quizHintText) quizHintText.innerText = "";
+    if (quizHintBtn) {
+        quizHintBtn.disabled = false;
+        quizHintBtn.innerText = "💡 ヒントを使う (残り 3 回)";
+    }
 }
 
 // 答えるボタンを押したとき
@@ -720,6 +732,43 @@ quizBtn.addEventListener('click', () => {
         setTimeout(nextQuestion, 2000); // 2秒後に次の問題
     }
 });
+
+// --- 【新規】3ヒント機能ボタンが押されたときのルール ---
+if (quizHintBtn) {
+    quizHintBtn.addEventListener('click', () => {
+        // ヒントがもうないときは何もしないよ
+        if (hintCount <= 0) return;
+
+        // 正解の言葉をセットする（英語か日本語かを選ぶよ）
+        let answer = "";
+        if (currentQuizMode === 'en2ja') {
+            answer = currentQuizWord.ja;
+        } else {
+            answer = currentQuizWord.en;
+        }
+
+        // ヒントの残り回数を1つ減らすよ
+        hintCount--;
+
+        if (hintCount === 2) {
+            // 1回目のヒント：文字数（もじすう）を教えるよ
+            quizHintText.innerText = `💡 ヒント1：全部で ${answer.length} 文字あるよ！`;
+            quizHintBtn.innerText = `💡 ヒントを使う (残り 2 回)`;
+        } else if (hintCount === 1) {
+            // 2回目のヒント：最初の文字（かしらもじ）を教えるよ
+            const firstChar = answer.charAt(0);
+            quizHintText.innerText = `💡 ヒント1：全部で ${answer.length} 文字 / ヒント2：最初は「${firstChar}」から始まるよ！`;
+            quizHintBtn.innerText = `💡 ヒントを使う (残り 1 回)`;
+        } else if (hintCount === 0) {
+            // 3回目のヒント：最後の文字を教えるよ
+            const firstChar = answer.charAt(0);
+            const lastChar = answer.charAt(answer.length - 1);
+            quizHintText.innerText = `💡 ヒント1：${answer.length} 文字 / ヒント2：最初は「${firstChar}」 / ヒント3：最後は「${lastChar}」だよ！`;
+            quizHintBtn.innerText = `💡 ヒント (もう使えないよ)`;
+            quizHintBtn.disabled = true; // ボタンを押せなくするよ
+        }
+    });
+}
 
 // 最初（さいしょ）の1問目は、難易度を選ぶまで出さないようにするよ
 // nextQuestion();

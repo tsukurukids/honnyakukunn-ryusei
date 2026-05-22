@@ -154,6 +154,14 @@
                         
                         <button id="quiz-btn" class="btn primary">✅ 答える</button>
 
+                        <!-- 【新規】3ヒント機能を表示するエリア -->
+                        <div id="quiz-hint-area" style="margin-top: 15px; text-align: center;">
+                            <!-- ヒントを使うボタン -->
+                            <button id="quiz-hint-btn" class="btn secondary" style="font-size: 0.9rem; padding: 5px 10px; margin-bottom: 5px;">💡 ヒントを使う (残り 3 回)</button>
+                            <!-- ヒントを表示するテキスト -->
+                            <p id="quiz-hint-text" style="font-size: 0.9rem; color: #e67e22; min-height: 20px; margin: 5px 0;"></p>
+                        </div>
+
                         <div id="quiz-result-area" class="result-box" style="margin-top: 15px;">
                             <p id="quiz-score" style="font-size: 0.9rem; color: #666;">れんぞく正解: 0 回</p>
                             <p id="quiz-message" style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;">ここに結果が出るよ！</p>
