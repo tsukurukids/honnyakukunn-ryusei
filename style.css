@@ -1,0 +1,775 @@
+/* アプリ全体のおしゃれなデザインを決めるよ */
+
+/* 基本の設定（きほんのせってい） */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5; /* 少しグレーがかった白（しろ） */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* スマホのような縦長の画面（たてながのがめん）を表現（ひょうげん）するよ */
+#app {
+    width: 100%;
+    max-width: 480px; /* パソコンで見たときもスマホサイズにする */
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1); /* ふわっとした影（かげ） */
+    overflow: hidden;
+    position: relative;
+}
+
+/* ヘッダーのデザイン */
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* きれいなグラデーション */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* メイン部分のデザイン */
+main {
+    flex: 1; /* 余った場所を全部使う */
+    padding: 20px;
+    overflow-y: auto; /* たくさん書いてもスクロールできるようにする */
+}
+
+/* カード（白い枠）のデザイン */
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.guide {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* 入力する場所（にゅうりょくばしょ）のデザイン */
+input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #764ba2; /* 入力中は色を変える */
+}
+
+/* ボタンのデザイン */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.95); /* 押したときに少し小さくする */
+}
+
+.primary { background-color: #764ba2; color: white; }
+.secondary { background-color: #e0e0ff; color: #764ba2; }
+
+/* 結果表示エリア（けっかひょうじエリア）のデザイン */
+.result-box {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#status-text {
+    font-size: 0.8rem;
+    color: #888;
+}
+/* 単語ごとのデザイン */
+.word {
+    display: inline-block;
+    padding: 2px 5px;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.correct-word {
+    color: #28a745;
+    background-color: #e8f5e9;
+}
+
+.incorrect-word {
+    color: #dc3545;
+    background-color: #ffebee;
+    text-decoration: underline wavy; /* 波線をつける */
+}
+
+#recognized-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #333;
+}
+
+#feedback-msg {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* 合っている時と間違っている時の色 */
+.correct { color: #28a745; }
+.incorrect { color: #dc3545; }
+
+/* 下のメニューバーのデザイン */
+#bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    border-top: 1px solid #eee;
+    padding: 10px 0;
+    padding-bottom: 25px; /* iPhoneなどの下の余白（よはく）対策 */
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #999;
+    cursor: pointer;
+    transition: 0.3s; /* じわっと変わるようにする */
+}
+
+.nav-item.active {
+    color: #764ba2; /* 選ばれているときは色を変える */
+}
+
+.nav-item .icon {
+    font-size: 24px;
+}
+
+.nav-item .label {
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+/* --- 文法解析用のデザイン --- */
+#grammar-output {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: left;
+    margin-top: 10px;
+}
+
+/* 解析された単語のデザイン */
+.grammar-word {
+    display: inline-block;
+    padding: 2px 6px;
+    margin: 2px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* 主語 (Subject) のデザイン */
+.grammar-word.subject {
+    color: #0056b3;
+    background-color: #e7f3ff;
+    border-bottom: 3px solid #0056b3;
+}
+
+/* 動詞 (Verb) のデザイン */
+.grammar-word.verb {
+    color: #c82333;
+    background-color: #fff0f0;
+    border-bottom: 3px solid #c82333;
+}
+
+/* 名詞 (Noun) のデザイン */
+.grammar-word.noun {
+    color: #155724;
+    background-color: #d4edda;
+    border-bottom: 3px solid #28a745;
+}
+
+/* 形容詞 (Adjective) のデザイン */
+.grammar-word.adj {
+    color: #856404;
+    background-color: #fff3cd;
+    border-bottom: 3px solid #ffc107;
+}
+
+/* 副詞 (Adverb) のデザイン */
+.grammar-word.adv {
+    color: #6f42c1;
+    background-color: #f3f0ff;
+    border-bottom: 3px solid #6f42c1;
+}
+
+/* その他のデザイン */
+.grammar-word.other {
+    color: #495057;
+    background-color: #f1f3f5;
+}
+
+/* 色の説明（凡例）のデザイン */
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.badge.subject { background-color: #e7f3ff; color: #0056b3; border: 1px solid #0056b3; }
+.badge.verb { background-color: #fff0f0; color: #c82333; border: 1px solid #c82333; }
+.badge.noun { background-color: #d4edda; color: #155724; border: 1px solid #28a745; }
+.badge.adj { background-color: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+.badge.adv { background-color: #f3f0ff; color: #6f42c1; border: 1px solid #6f42c1; }
+.badge.other { background-color: #f1f3f5; color: #495057; border: 1px solid #adb5bd; }
+
+#analyze-btn {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* --- クイズの難易度セレクターのデザイン --- */
+#quiz-difficulty {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23764ba2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1em;
+    padding-right: 40px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(118, 75, 162, 0.1);
+}
+
+#quiz-difficulty:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.2);
+}
+
+#quiz-difficulty:focus {
+    border-color: #764ba2;
+    box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.2);
+}
+
+/* --- 隠しコマンド：初代翻訳君モード（レトロデザイン） --- */
+.retro-mode {
+    background-color: #000; /* 全体の背景は黒にして、本体を目立たせる */
+}
+
+/* 本体（電子辞書風の枠） */
+.retro-mode #app {
+    background-color: #e5dfb8; /* 本体の色（昔の機械みたいな黄色っぽい色） */
+    border: 8px solid #222;
+    border-radius: 15px;
+    box-shadow: inset 5px 5px 15px rgba(255,255,255,0.5), inset -5px -5px 15px rgba(0,0,0,0.2);
+    font-family: 'MS Gothic', 'Courier New', monospace; /* カクカクした文字にする */
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* ヘッダー（紫色のタイトル部分） */
+.retro-mode header {
+    background: #3c2a63;
+    color: #e5dfb8;
+    border-bottom: 5px solid #222;
+}
+
+/* 画面の液晶（昔のゲーム機みたいな緑っぽいグレー） */
+.retro-mode main {
+    background-color: #b7bfa3; 
+    margin: 15px;
+    border: 4px solid #222;
+    border-radius: 5px;
+    box-shadow: inset 3px 3px 5px rgba(0,0,0,0.2);
+}
+
+/* カードの白い枠を消す */
+.retro-mode .card {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 10px;
+}
+
+/* ボタン（紫色のカクカクしたボタン） */
+.retro-mode .btn {
+    background-color: #6c3483;
+    color: #fff;
+    border: 3px solid #222;
+    border-radius: 5px;
+    box-shadow: 2px 2px 0px #222; /* ドット絵っぽい影 */
+    font-family: 'MS Gothic', 'Courier New', monospace;
+}
+
+/* ボタンを押したときの動き */
+.retro-mode .btn:active {
+    transform: translate(2px, 2px); /* 沈み込むようにする */
+    box-shadow: 0px 0px 0px #222;
+}
+
+/* 入力欄（文字を入れるところ） */
+.retro-mode input[type="text"], .retro-mode select {
+    background-color: #c9d0b6;
+    border: 3px solid #222;
+    border-radius: 0;
+    font-family: 'MS Gothic', 'Courier New', monospace;
+    font-weight: bold;
+    color: #222;
+}
+
+/* 下のメニューバー */
+.retro-mode #bottom-nav {
+    background-color: #e5dfb8;
+    border-top: 4px solid #222;
+}
+
+.retro-mode .nav-item {
+    color: #222;
+    font-family: 'MS Gothic', 'Courier New', monospace;
+}
+
+/* 選ばれているメニューを緑の液晶っぽくする */
+.retro-mode .nav-item.active {
+    color: #222;
+    border: 2px solid #222;
+    background-color: #b7bfa3;
+    border-radius: 5px;
+}
+
+/* --- 隠しコマンド：魔法の翻訳君モード（V3.0 未来・魔法デザイン） --- */
+.magic-mode {
+    background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f1b 100%);
+    overflow: hidden;
+}
+
+/* 魔法モードの本体（ガラスのような透明感と光る枠） */
+.magic-mode #app {
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(20px);
+    border: 2px solid #00d2ff !important;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 210, 255, 0.4), inset 0 0 20px rgba(0, 210, 255, 0.2);
+    color: #e0f2fe;
+    font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+/* 魔法モードのヘッダー */
+.magic-mode header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.3);
+}
+
+.magic-mode header h1 {
+    text-shadow: 0 0 10px #00d2ff, 0 0 20px #00d2ff;
+    letter-spacing: 2px;
+}
+
+/* 魔法モードのメインエリア */
+.magic-mode main {
+    background: transparent !important;
+}
+
+.magic-mode .card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(0, 210, 255, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    color: #fff !important;
+}
+
+.magic-mode .card h3 {
+    color: #00d2ff !important;
+    text-shadow: 0 0 5px #00d2ff;
+}
+
+/* 魔法モードのボタン */
+.magic-mode .btn.primary {
+    background: linear-gradient(90deg, #00d2ff, #3a7bd5) !important;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+    border: none !important;
+    color: white !important;
+}
+
+.magic-mode .btn.secondary {
+    background: rgba(0, 210, 255, 0.1) !important;
+    border: 1px solid #00d2ff !important;
+    color: #00d2ff !important;
+}
+
+/* 魔法モードの入力欄 */
+.magic-mode input[type="text"], .magic-mode select {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(0, 210, 255, 0.5) !important;
+    color: #fff !important;
+    box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.1);
+}
+
+/* 魔法モードの下部ナビゲーション */
+.magic-mode #bottom-nav {
+    background: rgba(15, 23, 42, 0.9) !important;
+    border-top: 1px solid rgba(0, 210, 255, 0.3) !important;
+}
+
+.magic-mode .nav-item {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.magic-mode .nav-item.active {
+    color: #00d2ff !important;
+    text-shadow: 0 0 10px #00d2ff;
+}
+
+/* 魔法モード用のアイコン変更（擬似要素で上書き） */
+.magic-mode #nav-home .icon::after { content: "🧙‍♂️"; }
+.magic-mode #nav-pronunciation .icon::after { content: "🧪"; }
+.magic-mode #nav-grammar .icon::after { content: "📖"; }
+.magic-mode #nav-translate .icon::after { content: "🔮"; }
+.magic-mode #nav-quiz .icon::after { content: "✨"; }
+
+.magic-mode .nav-item .icon { font-size: 0; }
+.magic-mode .nav-item .icon::after { font-size: 24px; }
+
+/* --- 隠しコマンド：森の翻訳君モード（Nature Mode） --- */
+.nature-mode {
+    background: linear-gradient(180deg, #2d5a27 0%, #1a3c1a 100%);
+}
+
+/* 森モードの本体（木目調と柔らかい緑） */
+.nature-mode #app {
+    background-color: #f1f8e9 !important;
+    border: 10px solid #5d4037 !important; /* 木の枠 */
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: #2e7d32;
+}
+
+/* 森モードのヘッダー */
+.nature-mode header {
+    background: #689f38 !important;
+    border-bottom: 3px solid #33691e;
+    border-radius: 20px 20px 0 0;
+}
+
+.nature-mode header h1 {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    color: #fff;
+    text-shadow: 2px 2px #33691e;
+}
+
+/* 森モードのメインエリア */
+.nature-mode .card {
+    background: #ffffff !important;
+    border: 2px solid #aed581 !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 0 #aed581 !important;
+}
+
+.nature-mode .card h3 {
+    color: #388e3c !important;
+}
+
+/* 森モードのボタン */
+.nature-mode .btn.primary {
+    background-color: #4caf50 !important;
+    border-bottom: 4px solid #2e7d32 !important;
+    color: white !important;
+    border-radius: 50px !important;
+}
+
+.nature-mode .btn.secondary {
+    background-color: #dcedc8 !important;
+    border-bottom: 4px solid #c5e1a5 !important;
+    color: #33691e !important;
+    border-radius: 50px !important;
+}
+
+/* 森モードの入力欄 */
+.nature-mode input[type="text"], .nature-mode select {
+    background-color: #fff !important;
+    border: 2px solid #81c784 !important;
+    border-radius: 15px !important;
+    color: #2e7d32 !important;
+}
+
+/* 森モードの下部ナビゲーション */
+.nature-mode #bottom-nav {
+    background-color: #5d4037 !important; /* 木の根っこのような茶色 */
+    border-top: none !important;
+    padding-bottom: 20px;
+}
+
+.nature-mode .nav-item {
+    color: #d7ccc8 !important;
+}
+
+.nature-mode .nav-item.active {
+    color: #ffeb3b !important; /* 太陽の光のような黄色 */
+}
+
+/* 森モード用のアイコン変更 */
+.nature-mode #nav-home .icon::after { content: "🏡"; }
+.nature-mode #nav-pronunciation .icon::after { content: "🐦"; }
+.nature-mode #nav-grammar .icon::after { content: "🌿"; }
+.nature-mode #nav-translate .icon::after { content: "🍄"; }
+.nature-mode #nav-quiz .icon::after { content: "🍎"; }
+
+.nature-mode .nav-item .icon { font-size: 0; }
+.nature-mode .nav-item .icon::after { font-size: 24px; }
+
+/* --- 隠しコマンド：ホラー翻訳君モード（Horror Mode） --- */
+@keyframes flicker {
+    0% { opacity: 1; }
+    5% { opacity: 0.8; }
+    10% { opacity: 0.9; }
+    15% { opacity: 0.7; }
+    20% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+@keyframes text-glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+.horror-mode {
+    background: #000;
+    animation: flicker 0.2s infinite;
+}
+
+.horror-mode #app {
+    background: rgba(40, 0, 0, 0.9) !important;
+    border: 3px solid #ff0000 !important;
+    color: #ff0000 !important;
+    box-shadow: 0 0 20px #8b0000 !important;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.horror-mode header {
+    background: #4a0000 !important;
+    border-bottom: 2px solid #ff0000;
+}
+
+.horror-mode header h1 {
+    animation: text-glitch 0.1s infinite;
+    text-shadow: 3px 3px #000;
+}
+
+.horror-mode .card {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border: 1px solid #8b0000 !important;
+    color: #ff3333 !important;
+}
+
+.horror-mode .btn.primary {
+    background: #8b0000 !important;
+    color: #000 !important;
+    font-weight: bold;
+    border: 1px solid #ff0000 !important;
+    text-transform: uppercase;
+}
+
+.horror-mode .btn.primary:hover {
+    background: #ff0000 !important;
+}
+
+.horror-mode input[type="text"], .horror-mode select {
+    background: #000 !important;
+    border: 1px solid #ff0000 !important;
+    color: #ff0000 !important;
+    caret-color: #ff0000;
+}
+
+.horror-mode #bottom-nav {
+    background: #000 !important;
+    border-top: 2px solid #8b0000 !important;
+}
+
+.horror-mode .nav-item {
+    color: #4a0000 !important;
+}
+
+.horror-mode .nav-item.active {
+    color: #ff0000 !important;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+/* ホラーモード用のアイコン */
+.horror-mode #nav-home .icon::after { content: "🩸"; }
+.horror-mode #nav-pronunciation .icon::after { content: "💀"; }
+.horror-mode #nav-grammar .icon::after { content: "🕸️"; }
+.horror-mode #nav-translate .icon::after { content: "👁️"; }
+.horror-mode #nav-quiz .icon::after { content: "⚰️"; }
+
+.horror-mode .nav-item .icon { font-size: 0; }
+.horror-mode .nav-item .icon::after { font-size: 24px; }
+
+/* 怖い雰囲気を出すためのオーバーレイ */
+.horror-mode::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 50%, black 150%);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* --- BGMトグルボタン --- */
+.bgm-btn {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #764ba2;
+    border: 2px solid #764ba2;
+    border-radius: 50px;
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transition: 0.3s;
+}
+
+.bgm-btn:hover {
+    background-color: #764ba2;
+    color: white;
+}
+
+.bgm-btn.muted {
+    background-color: #f8f9fa;
+    color: #999;
+    border-color: #ccc;
+}
+
+/* --- 海の翻訳君 (Sea Mode) --- */
+.sea-mode { background: linear-gradient(180deg, #001f3f, #0074D9); }
+.sea-mode #app { background: rgba(0, 50, 100, 0.7) !important; border: 2px solid #7FDBFF !important; border-radius: 50px; box-shadow: 0 0 30px rgba(0, 150, 255, 0.5); color: #E0FFFF; }
+.sea-mode header { background: transparent !important; border-bottom: 2px solid rgba(127, 219, 255, 0.5); }
+.sea-mode .card { background: rgba(0, 100, 200, 0.3) !important; border: 1px solid #7FDBFF !important; color: white !important; }
+.sea-mode .btn { background: #0074D9 !important; color: white !important; border-radius: 20px; }
+.sea-mode input[type="text"], .sea-mode select { background: rgba(255, 255, 255, 0.1) !important; color: #E0FFFF !important; border: 1px solid #7FDBFF !important; }
+.sea-mode #bottom-nav { background: rgba(0, 50, 100, 0.8) !important; border-top: 1px solid #7FDBFF !important; }
+.sea-mode .nav-item { color: #E0FFFF !important; }
+
+/* --- 空の翻訳君 (Sky Mode) --- */
+.sky-mode { background: linear-gradient(180deg, #87CEEB, #F0F8FF); }
+.sky-mode #app { background: rgba(255, 255, 255, 0.9) !important; border: none !important; border-radius: 40px; box-shadow: 0 10px 40px rgba(135, 206, 235, 0.4); color: #4682B4; }
+.sky-mode header { background: #87CEEB !important; color: white; }
+.sky-mode .card { background: white !important; border: none !important; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.sky-mode .btn { background: #4682B4 !important; color: white !important; border-radius: 30px; }
+.sky-mode input[type="text"], .sky-mode select { border: 2px solid #87CEEB !important; border-radius: 20px !important; }
+
+/* --- 100均翻訳君 (Cheap Mode) --- */
+.cheap-mode { background: #fff; }
+.cheap-mode #app { background: #fff !important; border: 1px solid #000 !important; border-radius: 0; box-shadow: none; font-family: monospace; }
+.cheap-mode header { background: #ccc !important; color: #000; border-bottom: 1px dashed #000; padding: 5px; }
+.cheap-mode .card { background: #fff !important; border: 1px dashed #000 !important; border-radius: 0; box-shadow: none; color: #000 !important; }
+.cheap-mode .btn { background: #fff !important; color: #000 !important; border: 1px solid #000 !important; border-radius: 0; padding: 5px; }
+.cheap-mode input[type="text"], .cheap-mode select { border: 1px solid #000 !important; border-radius: 0; background: #fff !important; color: #000 !important; }
+.cheap-mode #bottom-nav { background: #eee !important; border-top: 1px solid #000 !important; }
+
+/* --- 龍玉翻訳君 (Dragon Mode) --- */
+.dragon-mode { background: radial-gradient(circle, #ff9900, #cc0000); }
+.dragon-mode #app { background: #fff3e0 !important; border: 5px solid #ff6600 !important; border-radius: 10px; box-shadow: 0 0 40px #ffcc00; color: #cc3300; font-weight: bold; }
+.dragon-mode header { background: #ff6600 !important; color: #fff; text-shadow: 2px 2px 0 #cc0000; }
+.dragon-mode .card { background: #fff8e1 !important; border: 2px solid #ff9900 !important; box-shadow: 0 4px 0 #ff6600 !important; }
+.dragon-mode .btn { background: #e65100 !important; color: #fff !important; font-size: 1.1rem; border-bottom: 4px solid #bf360c !important; }
+.dragon-mode input[type="text"], .dragon-mode select { border: 3px solid #ffb300 !important; background: #fffde7 !important; }
+
+/* --- 天使と悪魔の翻訳君 (Angel & Demon Mode) --- */
+.angel-demon-mode { background: linear-gradient(90deg, #f0f2f5 50%, #1a1a1a 50%); }
+.angel-demon-mode #app { background: linear-gradient(90deg, rgba(255,255,255,0.9) 50%, rgba(50,0,0,0.9) 50%) !important; border: 3px solid #777 !important; border-radius: 0; color: #333; }
+.angel-demon-mode header { background: linear-gradient(90deg, #ffeb3b 50%, #8b0000 50%) !important; color: #fff; }
+.angel-demon-mode .card { background: rgba(255,255,255,0.5) !important; border: 2px solid #999 !important; color: #111 !important; font-weight: bold; }
+.angel-demon-mode .btn { background: #555 !important; color: #fff !important; border: 1px solid #000 !important; }
+.angel-demon-mode input[type="text"] { background: rgba(255,255,255,0.8) !important; border: 2px solid #666 !important; }
+
+/* --- サイバー翻訳君 (Cyber Mode) --- */
+.cyber-mode { background: #0a0a0a; }
+.cyber-mode #app { background: #000 !important; border: 1px solid #0f0 !important; border-radius: 5px; box-shadow: 0 0 20px #0f0; color: #0f0; font-family: 'Courier New', monospace; }
+.cyber-mode header { background: #001100 !important; border-bottom: 1px solid #0f0; color: #0f0; }
+.cyber-mode .card { background: #001100 !important; border: 1px dashed #0f0 !important; color: #0f0 !important; }
+.cyber-mode .btn { background: transparent !important; color: #0f0 !important; border: 1px solid #0f0 !important; text-transform: uppercase; }
+.cyber-mode input[type="text"], .cyber-mode select { background: #000 !important; color: #0f0 !important; border: 1px solid #0f0 !important; }
+.cyber-mode #bottom-nav { background: #000 !important; border-top: 1px solid #0f0 !important; }
+.cyber-mode .nav-item { color: #0f0 !important; }
+
+/* --- 超神様的翻訳君 (Super God Mode) --- */
+.super-god-mode { background: radial-gradient(circle, #fff, #ffeaa7); }
+.super-god-mode #app { background: rgba(255,255,255,0.8) !important; border: 5px solid #fdcb6e !important; border-radius: 50px; box-shadow: 0 0 50px #ffeaa7, inset 0 0 30px #fdcb6e; color: #d35400; font-size: 1.1rem; }
+.super-god-mode header { background: linear-gradient(135deg, #f1c40f, #f39c12) !important; color: #fff; text-shadow: 0 0 10px #fff; }
+.super-god-mode .card { background: #fff !important; border: 2px solid #f1c40f !important; box-shadow: 0 0 20px rgba(241, 196, 15, 0.3) !important; }
+.super-god-mode .btn { background: linear-gradient(135deg, #f1c40f, #e67e22) !important; color: #fff !important; border: none !important; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.5); }
+.super-god-mode input[type="text"], .super-god-mode select { border: 2px solid #f39c12 !important; background: #fff9c4 !important; }
+
+/* --- 真・ホラー翻訳君 (True Horror Mode) --- */
+.true-horror-mode { background: #000; animation: flicker 0.1s infinite; }
+.true-horror-mode #app { background: #110000 !important; border: 5px double #f00 !important; border-radius: 0; box-shadow: 0 0 50px #f00; color: #f00; font-family: 'Courier New', monospace; filter: contrast(150%); }
+.true-horror-mode header { background: #300 !important; border-bottom: 3px solid #f00; color: #fff; text-shadow: 0 0 5px #f00; }
+.true-horror-mode .card { background: transparent !important; border: 1px dotted #f00 !important; color: #a00 !important; }
+.true-horror-mode .btn { background: #500 !important; color: #f00 !important; border: 1px solid #f00 !important; text-shadow: 0 0 5px #f00; }
+.true-horror-mode input[type="text"], .true-horror-mode select { background: #000 !important; color: #f00 !important; border: 1px solid #f00 !important; }

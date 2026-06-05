@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <!-- スマホで見たときに、ちょうどいい大きさにする設定（せってい）だよ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Study - 英語学習・翻訳アプリ</title>
+    <!-- デザインを決めるファイルを読みこむよ -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- アプリ全体の大きな入れ物（いれもの） -->
+    <div id="app">
+        
+        <!-- BGMコントロールボタン（画面右下に固定） -->
+        <button id="bgm-toggle-btn" class="bgm-btn" title="BGMのON/OFF">🔊 BGM ON</button>
+
+        <!-- アプリのタイトルが入るヘッダー -->
+        <header>
+            <h1>Word Study</h1>
+            <p>12-20歳のための学習アプリ</p>
+        </header>
+
+        <!-- 機能（きのう）ごとに中身が切り替わるメインエリア -->
+        <main id="main-content">
+            
+            <!-- ホームセクション -->
+            <section id="home-section">
+                <div class="card">
+                    <h3>🏠 ようこそ！</h3>
+                    <p>Word Studyへようこそ！<br>このアプリで英語を楽しく勉強しよう。</p>
+                    <p class="guide">下のメニューから機能を選んでね！</p>
+                </div>
+            </section>
+
+            <!-- 発音練習（はつおんれんしゅう）セクション -->
+            <section id="pronunciation-section" style="display: none;">
+                <div class="card">
+                    <h3>🎙 発音練習</h3>
+                    <p class="guide">練習したい英語を入力してね</p>
+                    <input type="text" id="practice-text" placeholder="ここに英語を入力" value="Hello, how are you?">
+                    
+                    <div class="button-group">
+                        <!-- お手本の声を聞くボタン -->
+                        <button id="listen-btn" class="btn secondary">🔊 お手本を聞く</button>
+                        <!-- 自分の声を録音してチェックするボタン -->
+                        <button id="speak-btn" class="btn primary">🎤 しゃべってチェック</button>
+                    </div>
+
+                    <!-- 結果を表示する場所 -->
+                    <div id="result-area" class="result-box">
+                        <p id="status-text">ボタンを押して始めてね！</p>
+                        <p id="recognized-text"></p>
+                        <p id="feedback-msg"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 文法解析（ぶんぽうかいせき）セクション -->
+            <section id="grammar-section" style="display: none;">
+                <div class="card">
+                    <h3>📖 文法まるわかり</h3>
+                    <p class="guide">調べたい英文を入力してね</p>
+                    <input type="text" id="grammar-input" placeholder="例: I like apples." value="I like apples.">
+                    
+                    <button id="analyze-btn" class="btn primary">🔍 解析する</button>
+
+                    <div id="grammar-result-area" class="result-box">
+                        <p id="grammar-status">英文を入力してボタンを押してね！</p>
+                        <div id="grammar-output"></div>
+                    </div>
+                    
+                    <!-- 色の説明 -->
+                    <div class="legend">
+                        <span class="badge subject">主語</span>
+                        <span class="badge verb">動詞</span>
+                        <span class="badge noun">名詞</span>
+                        <span class="badge adj">形容詞</span>
+                        <span class="badge adv">副詞</span>
+                        <span class="badge other">その他</span>
+                    </div>
+
+                    <!-- 【追加】文法をやさしく教えるヒントコーナー -->
+                    <div class="grammar-tips" style="margin-top: 25px; padding-top: 15px; border-top: 1px dashed #ccc; font-size: 0.85rem; color: #555; text-align: left;">
+                        <p style="font-weight: bold; margin-bottom: 8px; color: #764ba2;">💡 文法のヒント</p>
+                        <ul style="list-style: none; padding-left: 5px;">
+                            <li style="margin-bottom: 5px;">🔵 <strong>主語</strong>：文の主人公！「だれが」「なにが」のこと。</li>
+                            <li style="margin-bottom: 5px;">🔴 <strong>動詞</strong>：動きや様子。「〜する」「〜だ」のこと。</li>
+                            <li style="margin-bottom: 5px;">🟢 <strong>名詞</strong>：ものの名前。sがつくと「たくさん」になるよ。</li>
+                            <li style="margin-bottom: 5px;">🟡 <strong>形容詞</strong>：どんな感じか。名詞を詳しく説明するよ。</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 翻訳（ほんやく）セクション -->
+            <section id="translate-section" style="display: none;">
+                <div class="card">
+                    <h3>🌐 スマート翻訳</h3>
+                    
+                    <!-- 翻訳の向きを選ぶメニュー -->
+                    <div style="margin-bottom: 15px; text-align: center;">
+                        <select id="translate-direction" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 2px solid #764ba2; color: #333; outline: none; width: 100%; cursor: pointer;">
+                            <option value="en|ja">🇺🇸 英語 ➡️ 🇯🇵 日本語</option>
+                            <option value="ja|en">🇯🇵 日本語 ➡️ 🇺🇸 英語</option>
+                        </select>
+                    </div>
+
+                    <p class="guide" id="translate-guide">翻訳したい言葉を入力してね</p>
+                    <input type="text" id="translate-input" placeholder="例: I like soccer." value="I like soccer.">
+                    
+                    <button id="translate-btn" class="btn primary">🔄 翻訳する</button>
+
+                    <div id="translate-result-area" class="result-box">
+                        <p id="translate-status">言葉を入力してボタンを押してね！</p>
+                        <p id="translate-output" style="font-size: 1.5rem; font-weight: bold; color: #764ba2;"></p>
+                        <button id="translate-speak-btn" class="btn secondary" style="margin-top: 10px; display: none;">🔊 翻訳音声を再生</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 単語テスト（クイズ）セクション -->
+            <section id="quiz-section" style="display: none;">
+                <div class="card">
+                    <h3>📝 単語テスト</h3>
+                    <p class="guide">難易度（なんいど）を選んでね！</p>
+                    <div style="margin-bottom: 15px;">
+                        <select id="quiz-difficulty" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 2px solid #764ba2; color: #333; outline: none; width: 100%; cursor: pointer;">
+                            <option value="" disabled selected>👇 難易度を選んでね</option>
+                            <option value="peaceful">🕊️ ピースフル</option>
+                            <option value="easy">🐣 イージー</option>
+                            <option value="normal">😊 ノーマル</option>
+                            <option value="hard">🔥 ハード</option>
+                            <option value="expert">🏆 エキスパート</option>
+                        </select>
+                    </div>
+
+                    <p class="guide">出題（しゅつだい）形式を選んでね！</p>
+                    <div style="margin-bottom: 15px;">
+                        <select id="quiz-type" style="padding: 10px; font-size: 1rem; border-radius: 8px; border: 2px solid #764ba2; color: #333; outline: none; width: 100%; cursor: pointer;">
+                            <option value="random" selected>🎲 ランダム</option>
+                            <option value="en2ja">📖 意味（英→日）</option>
+                            <option value="ja2en">✍️ 筆記（日→英）</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 最初は隠しておいて、難易度を選んだら表示するエリア -->
+                    <div id="quiz-game-area" style="display: none;">
+                        <p id="quiz-guide-text" class="guide">この英単語の意味を日本語で答えてね！</p>
+                        
+                        <div id="quiz-question-area" style="text-align: center; margin: 20px 0;">
+                            <span style="font-size: 1.2rem; color: #666;">問題:</span><br>
+                            <span id="quiz-word" style="font-size: 2.5rem; font-weight: bold; color: #764ba2;">apple</span>
+                        </div>
+
+                        <input type="text" id="quiz-input" placeholder="日本語を入力してね" value="">
+                        
+                        <button id="quiz-btn" class="btn primary">✅ 答える</button>
+
+                        <div id="quiz-result-area" class="result-box" style="margin-top: 15px;">
+                            <p id="quiz-score" style="font-size: 0.9rem; color: #666;">れんぞく正解: 0 回</p>
+                            <p id="quiz-message" style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;">ここに結果が出るよ！</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- 下に並ぶメニュー（タブバー） -->
+        <nav id="bottom-nav">
+            <button id="nav-home" class="nav-item active">
+                <span class="icon">🏠</span>
+                <span class="label">ホーム</span>
+            </button>
+            <button id="nav-pronunciation" class="nav-item">
+                <span class="icon">🗣️</span>
+                <span class="label">発音</span>
+            </button>
+            <button id="nav-grammar" class="nav-item">
+                <span class="icon">📖</span>
+                <span class="label">文法</span>
+            </button>
+            <button id="nav-translate" class="nav-item">
+                <span class="icon">🌐</span>
+                <span class="label">翻訳</span>
+            </button>
+            <button id="nav-quiz" class="nav-item">
+                <span class="icon">📝</span>
+                <span class="label">テスト</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <!-- 動きをつけるファイルを読みこむよ -->
+    <script src="bgm.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
