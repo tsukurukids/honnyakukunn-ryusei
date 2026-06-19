@@ -11,23 +11,73 @@ const statusText = document.getElementById('status-text');
 const recognizedText = document.getElementById('recognized-text');
 const feedbackMsg = document.getElementById('feedback-msg');
 
+// --- 隠しコマンド（裏モード）に合わせて、英語の読み上げの声を変える設定だよ ---
+function configureUtterance(utterance) {
+    const classList = document.body.classList;
+    
+    if (classList.contains('true-horror-mode')) {
+        utterance.pitch = 0.05; // 震え上がるような超低音
+        utterance.rate = 0.4;   // とてもゆっくりしゃべるよ
+    } else if (classList.contains('horror-mode')) {
+        utterance.pitch = 0.2;  // 低くて怖い声
+        utterance.rate = 0.6;   // ゆっくりしゃべるよ
+    } else if (classList.contains('super-god-mode')) {
+        utterance.pitch = 0.6;  // 威厳（いげん）のある神様のような低い声
+        utterance.rate = 0.75;  // 落ち着いてしゃべるよ
+    } else if (classList.contains('cyber-mode')) {
+        utterance.pitch = 1.2;  // 高い電子音のような声
+        utterance.rate = 1.4;   // ハッカーっぽく早口（はやくち）でしゃべるよ
+    } else if (classList.contains('angel-demon-mode')) {
+        // 天使と悪魔なので、交互に高くなったり低くなったりする不思議な声にするよ
+        utterance.pitch = Math.random() > 0.5 ? 1.6 : 0.3;
+        utterance.rate = 0.9;
+    } else if (classList.contains('dragon-mode')) {
+        utterance.pitch = 0.4;  // 力強いドラゴンのような低い声
+        utterance.rate = 0.85;  // 少しゆっくり
+    } else if (classList.contains('cheap-mode')) {
+        utterance.pitch = 2.0;  // おもちゃのように超高い声
+        utterance.rate = 1.3;   // せっかちにしゃべるよ
+    } else if (classList.contains('sky-mode')) {
+        utterance.pitch = 1.8;  // 大空を飛ぶような高い声
+        utterance.rate = 1.2;
+    } else if (classList.contains('sea-mode')) {
+        utterance.pitch = 0.5;  // 水の中にいるようなこもった低い声
+        utterance.rate = 0.75;
+    } else if (classList.contains('magic-mode')) {
+        utterance.pitch = 1.5;  // 魔法使い（まほうつかい）の妖精のようなキラキラした高い声
+        utterance.rate = 1.1;
+    } else if (classList.contains('nature-mode')) {
+        utterance.pitch = 0.9;  // 優しい森のささやきのような穏やかな声
+        utterance.rate = 0.85;
+    } else if (classList.contains('retro-mode')) {
+        utterance.pitch = 1.4;  // ファミコンのゲームに出てくるロボット風の声
+        utterance.rate = 1.25;
+    } else if (classList.contains('space-mode')) {
+        utterance.pitch = 0.8;  // 無線風の少しくぐもった低い声
+        utterance.rate = 1.15;  // 宇宙のテンポ
+    } else if (classList.contains('matsuri-mode')) {
+        utterance.pitch = 1.3;  // テンション高めの高い声
+        utterance.rate = 1.45;  // 威勢よく早口でしゃべるよ
+    } else if (classList.contains('snow-mode')) {
+        utterance.pitch = 0.95; // 寒さに凍えるような落ち着いた声
+        utterance.rate = 0.75;  // しんしんとゆっくりしゃべるよ
+    } else if (classList.contains('gold-mode')) {
+        utterance.pitch = 0.7;  // 堂々とした王様のような声
+        utterance.rate = 0.9;   // おごそかにゆっくりしゃべるよ
+    } else {
+        utterance.pitch = 1.0;  // いつもの声
+        utterance.rate = 1.0;
+    }
+}
+
 // --- ① お手本の声を聞く機能 (Speech Synthesis) ---
 listenBtn.addEventListener('click', () => {
     // しゃべる内容をセットする
     const utterance = new SpeechSynthesisUtterance(practiceText.value);
     utterance.lang = 'en-US'; // 英語（アメリカ）でしゃべる
     
-    // ホラーモードのときは声を怖くする
-    if (document.body.classList.contains('horror-mode') || document.body.classList.contains('true-horror-mode')) {
-        utterance.pitch = 0.1; // 超低音
-        utterance.rate = 0.5;  // ゆっくり
-    } else if (document.body.classList.contains('sea-mode')) {
-        utterance.pitch = 0.5;
-        utterance.rate = 0.7;
-    } else if (document.body.classList.contains('sky-mode')) {
-        utterance.pitch = 1.8;
-        utterance.rate = 1.2;
-    }
+    // 隠しコマンド（裏モード）に合わせた声を設定するよ
+    configureUtterance(utterance);
     
     window.speechSynthesis.speak(utterance); // 実際にしゃべる
 });
@@ -121,9 +171,22 @@ if (SpeechRecognition) {
         } else if (spokenText.includes("恐怖体験")) {
             document.body.className = ''; document.body.classList.add("true-horror-mode");
             recognizedText.innerHTML = "🩸 真・ホラー翻訳君起動..."; feedbackMsg.innerText = ""; return;
+        } else if (spokenText.includes("宇宙旅行") || lowerSpokenText.includes("space")) {
+            document.body.className = ''; document.body.classList.add("space-mode");
+            recognizedText.innerHTML = "🚀 宇宙翻訳君起動！"; feedbackMsg.innerText = ""; return;
+        } else if (spokenText.includes("お祭り") || lowerSpokenText.includes("matsuri")) {
+            document.body.className = ''; document.body.classList.add("matsuri-mode");
+            recognizedText.innerHTML = "🏮 お祭り翻訳君起動！ワッショイ！"; feedbackMsg.innerText = ""; return;
+        } else if (spokenText.includes("雪国") || lowerSpokenText.includes("snow")) {
+            document.body.className = ''; document.body.classList.add("snow-mode");
+            recognizedText.innerHTML = "❄️ 雪国翻訳君起動！"; feedbackMsg.innerText = ""; return;
+        } else if (spokenText.includes("黄金郷") || lowerSpokenText.includes("gold")) {
+            document.body.className = ''; document.body.classList.add("gold-mode");
+            recognizedText.innerHTML = "👑 黄金郷翻訳君起動！"; feedbackMsg.innerText = ""; return;
         } else if (spokenText.includes("翻訳君") || lowerSpokenText.includes("honyaku")) {
-            // 元に戻る
-            document.body.classList.remove("retro-mode", "magic-mode", "nature-mode");
+            // すべての隠しモードのクラスを消して、元の状態に戻すよ
+            document.body.className = '';
+            updateDifficultyOptions(); // ホラーモードの難易度選択肢も消すよ
             recognizedText.innerHTML = "✨ 元の最新モードに戻ったよ！";
             feedbackMsg.innerText = "";
             return;
@@ -333,8 +396,34 @@ analyzeBtn.addEventListener('click', () => {
         grammarStatus.innerText = "📟 隠しコマンド発動！初代翻訳君仕様になったよ！";
         grammarOutput.innerHTML = "";
         return;
+    } else if (text.includes("宇宙旅行") || lowerText.includes("space")) {
+        document.body.className = '';
+        document.body.classList.add("space-mode");
+        grammarStatus.innerText = "🚀 宇宙翻訳君 起動！広大な宇宙を感じてね。";
+        grammarOutput.innerHTML = "";
+        return;
+    } else if (text.includes("お祭り") || lowerText.includes("matsuri")) {
+        document.body.className = '';
+        document.body.classList.add("matsuri-mode");
+        grammarStatus.innerText = "🏮 お祭り翻訳君 起動！ワッショイ！";
+        grammarOutput.innerHTML = "";
+        return;
+    } else if (text.includes("雪国") || lowerText.includes("snow")) {
+        document.body.className = '';
+        document.body.classList.add("snow-mode");
+        grammarStatus.innerText = "❄️ 雪国翻訳君 起動！しんしんと降る雪の癒やし。";
+        grammarOutput.innerHTML = "";
+        return;
+    } else if (text.includes("黄金郷") || lowerText.includes("gold")) {
+        document.body.className = '';
+        document.body.classList.add("gold-mode");
+        grammarStatus.innerText = "👑 黄金郷翻訳君 起動！豪華絢爛な世界へ。";
+        grammarOutput.innerHTML = "";
+        return;
     } else if (text.includes("翻訳君") || lowerText.includes("honyaku")) {
-        document.body.classList.remove("retro-mode", "magic-mode", "nature-mode", "horror-mode");
+        // すべての隠しモードのクラスを消して、元の状態に戻すよ
+        document.body.className = '';
+        updateDifficultyOptions(); // ホラーモードの難易度選択肢も消すよ
         grammarStatus.innerText = "✨ 元の最新モードに戻ったよ！";
         grammarOutput.innerHTML = "";
         return;
@@ -486,8 +575,21 @@ translateBtn.addEventListener('click', async () => {
     } else if (text.includes("恐怖体験")) {
         document.body.className = ''; document.body.classList.add("true-horror-mode");
         translateStatus.innerText = "🩸 真・ホラー翻訳君起動..."; translateOutput.innerText = ""; return;
+    } else if (text.includes("宇宙旅行") || lowerText.includes("space")) {
+        document.body.className = ''; document.body.classList.add("space-mode");
+        translateStatus.innerText = "🚀 宇宙翻訳君 起動！"; translateOutput.innerText = ""; return;
+    } else if (text.includes("お祭り") || lowerText.includes("matsuri")) {
+        document.body.className = ''; document.body.classList.add("matsuri-mode");
+        translateStatus.innerText = "🏮 お祭り翻訳君 起動！"; translateOutput.innerText = ""; return;
+    } else if (text.includes("雪国") || lowerText.includes("snow")) {
+        document.body.className = ''; document.body.classList.add("snow-mode");
+        translateStatus.innerText = "❄️ 雪国翻訳君 起動！"; translateOutput.innerText = ""; return;
+    } else if (text.includes("黄金郷") || lowerText.includes("gold")) {
+        document.body.className = ''; document.body.classList.add("gold-mode");
+        translateStatus.innerText = "👑 黄金郷翻訳君 起動！"; translateOutput.innerText = ""; return;
     } else if (text.includes("翻訳君") || lowerText.includes("honyaku")) {
-        document.body.classList.remove("retro-mode", "magic-mode", "nature-mode", "horror-mode");
+        // すべての隠しモードのクラスを消して、元の状態に戻すよ
+        document.body.className = '';
         translateStatus.innerText = "✨ 元の最新モードに戻ったよ！";
         translateOutput.innerText = "";
         updateDifficultyOptions(); // 難易度リストを元に戻す
@@ -522,13 +624,8 @@ translateBtn.addEventListener('click', async () => {
             speakBtnTr.onclick = () => {
                 const utterance = new SpeechSynthesisUtterance(result);
                 utterance.lang = langpair === 'en|ja' ? 'ja-JP' : 'en-US';
-                if (document.body.classList.contains('horror-mode') || document.body.classList.contains('true-horror-mode')) {
-                    utterance.pitch = 0.1; utterance.rate = 0.5;
-                } else if (document.body.classList.contains('sea-mode')) {
-                    utterance.pitch = 0.5; utterance.rate = 0.7;
-                } else if (document.body.classList.contains('sky-mode')) {
-                    utterance.pitch = 1.8; utterance.rate = 1.2;
-                }
+                // 隠しコマンド（裏モード）に合わせた声を設定するよ
+                configureUtterance(utterance);
                 window.speechSynthesis.speak(utterance);
             };
         }
@@ -703,21 +800,39 @@ quizDifficulty.addEventListener('change', handleQuizSettingsChange);
 // 出題形式が変わったとき
 quizType.addEventListener('change', nextQuestion); // 形式変更時は即座に次の問題へ
 
+// --- 🌟 【追加】たまに出題される「レア問題」（文、熟語、長い単語）のリストだよ ---
+const rareQuestions = [
+    { en: 'supercalifragilisticexpialidocious', ja: ['スーパーカリフラジリスティックエクスピアリドーシャス'], hint: '🚀 隠しコマンド「宇宙旅行」（または「space」）を入れると、不思議な宇宙の旅ができるよ！' },
+    { en: 'once in a blue moon', ja: ['めったにないこと', '滅多にないこと'], hint: '🏮 隠しコマンド「お祭り」（または「matsuri」）を入れると、にぎやかなお祭り騒ぎになるよ！' },
+    { en: 'break a leg', ja: ['がんばれ', '頑張れ'], hint: '❄️ 隠しコマンド「雪国」（または「snow」）を入れると、静かな銀世界に行けるよ！' },
+    { en: 'gold rush', ja: ['ゴールドラッシュ'], hint: '👑 隠しコマンド「黄金郷」（または「gold」）を入れると、金ピカのお城に行けるよ！' },
+    { en: 'knowledge is power', ja: ['知識は力なり', '知識は力だ'], hint: '🌊 隠しコマンド「海」を入れると、海の底の翻訳君が目を覚ますよ！' },
+    { en: 'action speaks louder than words', ja: ['行動は言葉よりも雄弁である', '論より証拠'], hint: '☁️ 隠しコマンド「大空」を入れると、空の翻訳君が舞い降りるよ！' }
+];
+
 // 新しい問題を出す機能
 function nextQuestion() {
     const level = quizDifficulty.value;
     if (!level) return;
 
-    const wordsPool = quizWords[level];
-
-    // 1. 次の単語をランダムに選ぶ（前回と同じにならないように）
+    // 15%の確率でレア問題（熟語やことわざ、長い単語）を出すよ！（ホラーモード以外）
+    const isRare = Math.random() < 0.15 && level !== 'horror';
     let selectedWord;
-    if (wordsPool.length > 1) {
-        do {
-            selectedWord = wordsPool[Math.floor(Math.random() * wordsPool.length)];
-        } while (selectedWord === lastQuizWord);
+
+    if (isRare) {
+        selectedWord = rareQuestions[Math.floor(Math.random() * rareQuestions.length)];
+        selectedWord.isRare = true; // レア問題の印をつけるよ
     } else {
-        selectedWord = wordsPool[0];
+        const wordsPool = quizWords[level];
+        // 1. 次の単語をランダムに選ぶ（前回と同じにならないように）
+        if (wordsPool.length > 1) {
+            do {
+                selectedWord = wordsPool[Math.floor(Math.random() * wordsPool.length)];
+            } while (selectedWord === lastQuizWord);
+        } else {
+            selectedWord = wordsPool[0];
+        }
+        selectedWord.isRare = false;
     }
     
     currentQuizWord = selectedWord;
@@ -780,6 +895,11 @@ quizBtn.addEventListener('click', () => {
     if (isCorrect) {
         // 正解のとき
         consecutiveCorrectCount++;
+
+        // もしレア問題に正解したときは、隠しコマンドのヒントをポップアップで教えるよ！
+        if (currentQuizWord.isRare) {
+            alert(`✨ レア問題 大正解！おめでとう！ ✨\n\n【特別なヒント】\n${currentQuizWord.hint}`);
+        }
 
         // 難易度別クリアカウント処理
         if (quizDifficulty.value) {
